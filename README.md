@@ -21,7 +21,7 @@ npm install
 
 ### 2. Set Up Environment Variables
 
-Create a `.env` file in the root directory of the project. Use the `.env.example` file as a reference for the required environment variables. Make sure to provide the necessary API endpoint and VAPID key values.
+Create a `.env` file in the root directory of the project. Use the `.env.example` file as a reference for the required environment variables. Make sure to provide the necessary API endpoint.
 
 ### 3. Register the Service Worker
 
