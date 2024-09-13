@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# React App with Push Notifications
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React application created using Create React App (CRA). It includes a service worker that listens for push notifications and registers the device for receiving them.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+- Node.js
+- npm (Node Package Manager)
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Follow the instructions below to set up and run the project.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Install Dependencies
 
-### `npm test`
+First, install the necessary dependencies. Open your terminal and run:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+```
 
-### `npm run build`
+### 2. Set Up Environment Variables
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create a `.env` file in the root directory of the project. Use the `.env.example` file as a reference for the required environment variables. Make sure to provide the necessary API endpoint and VAPID key values.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 3. Register the Service Worker
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The app automatically registers a service worker that listens for push notifications. During registration, it checks for an existing subscription using:
 
-### `npm run eject`
+```javascript
+serviceWorkerRegistration.pushManager.getSubscription();
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+If no subscription is found, it makes a `GET` request to the backend API endpoint `/push/get-vapid-public-key` to retrieve the public VAPID key. It then subscribes the device using:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```javascript
+serviceWorkerRegistration.pushManager.subscribe();
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 4. Subscribe the Device for Push Notifications
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Once subscribed, a `POST` request is sent to the backend endpoint `/push/subscribe` to register the device for receiving push notifications. This ensures that the device is properly configured to receive notifications sent by the backend.
 
-## Learn More
+### 5. Running the Application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To run the application in development mode, use the following command:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+```
 
-### Code Splitting
+This will start the application on `http://localhost:3000` by default. The page will reload if you make edits. You will also see any lint errors in the console.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 6. Build the Application
 
-### Analyzing the Bundle Size
+To build the application for production, use the following command:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run build
+```
 
-### Making a Progressive Web App
+This will create an optimized production build in the `build` folder. The build is minified, and filenames include the hashes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## How Push Notifications Work in This App
 
-### Advanced Configuration
+1. **Service Worker Registration**: When the application loads, it registers a service worker to handle push notifications.
+2. **Checking for Existing Subscriptions**: The app checks if the device is already subscribed to push notifications using `pushManager.getSubscription()`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3. **Requesting VAPID Public Key**: If no subscription exists, it makes a `GET` request to the `/push/get-vapid-public-key` endpoint to retrieve the VAPID public key from the backend.
 
-### Deployment
+4. **Subscribing to Push Notifications**: With the VAPID key, it subscribes the device to push notifications using `pushManager.subscribe()`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+5. **Registering Subscription with Backend**: After subscribing, the app sends a `POST` request to the `/push/subscribe` endpoint to register the subscription with the backend.
