@@ -14,6 +14,7 @@ export function register() {
         if (!subscription) {
           const response = await fetch(`${process.env.REACT_APP_API}/push/get-vapid-public-key`);
           const vapidPublicKey = await response.text();
+          alert(`Vapid public key: ${vapidPublicKey}`);
           subscription = await serviceWorkerRegistration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: vapidPublicKey
