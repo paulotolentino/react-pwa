@@ -1,7 +1,7 @@
 export function register() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js').then(async (serviceWorkerRegistration) => {
-      console.log('Service worker registered');
+      alert('Service worker registered');
       let subscription = await serviceWorkerRegistration.pushManager.getSubscription();
 
       if (!subscription) {
@@ -21,8 +21,10 @@ export function register() {
         body: JSON.stringify(subscription)
       });
     }).catch((error) => {
-      console.log('Error registering service worker:', error);
+      alert('Error registering service worker:', error);
     });
+  } else {
+    alert('Service worker not supported');
   }
 }
 
@@ -31,7 +33,7 @@ export function unregister() {
     navigator.serviceWorker.ready
       .then((registration) => {
         registration.unregister().then(() => {
-          console.log('Service worker unregistered');
+          alert('Service worker unregistered');
         });
       })
       .catch((error) => {
