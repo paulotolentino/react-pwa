@@ -8,6 +8,12 @@ self.addEventListener("push", function (event) {
       vibrate: data.notification.vibrate,
       badge: data.notification.badge,
       data: data.notification.link
+
+
+
+      , timestamp: data.notification.timestamp,
+      dir: data.notification.dir,
+      actions: data.notification.actions
     });
   } else {
     console.log("Push event but no data");
