@@ -6,7 +6,7 @@ export function register() {
       try {
         subscription = await serviceWorkerRegistration.pushManager.getSubscription();
       } catch (error) {
-        alert('Error getting subscription:', error);
+        alert(`Error getting subscription: ${JSON.stringify(error)}`);
         return;
       }
 
@@ -20,7 +20,7 @@ export function register() {
           });
         }
       } catch (error) {
-        alert('Error generating subscription:', error);
+        alert(`Error generating subscription: ${JSON.stringify(error)}`);
       }
 
       try {
@@ -33,10 +33,10 @@ export function register() {
           body: JSON.stringify(subscription)
         });
       } catch (error) {
-        alert('Error sending subscription to server:', error);
+        alert(`Error sending subscription to server: ${JSON.stringify(error)}`);
       }
     }).catch((error) => {
-      alert('Error registering service worker:', error);
+      alert(`Error registering service worker: ${JSON.stringify(error)}`);
     });
   } else {
     alert('Service worker not supported');
