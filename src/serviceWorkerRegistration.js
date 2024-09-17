@@ -20,7 +20,13 @@ export function register() {
           subscription = await serviceWorkerRegistration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: vapidPublicKey
-          });
+          }).then(function (subscription) {
+            alert('Subscription generated');
+            return subscription;
+          }).catch(function (error) {
+            alert(`Error on subscribe method: ${error}`);
+            throw error;
+          });;
         }
       } catch (error) {
         alert(`Error generating subscription: ${JSON.stringify(error)}`);
