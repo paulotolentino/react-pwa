@@ -21,6 +21,7 @@ export function register() {
         }
       } catch (error) {
         alert(`Error generating subscription: ${JSON.stringify(error)}`);
+        return;
       }
 
       try {
