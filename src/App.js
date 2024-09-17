@@ -35,6 +35,8 @@ function App() {
   const subscribe = async () => {
     // Check if push notifications are supported and allowed
     if (navigator.serviceWorker && window.PushManager && window.Notification) {
+      // Request permission to send push notifications
+      const serviceWorkerRegistration = await navigator.serviceWorker.getRegistration();
       let subscription = null;
       try {
         subscription = await serviceWorkerRegistration.pushManager.getSubscription();
