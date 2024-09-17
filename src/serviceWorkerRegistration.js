@@ -2,9 +2,15 @@ export function register() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js').then(async (serviceWorkerRegistration) => {
       alert('Service worker registered');
+      let subscription = null;
       try {
-        let subscription = await serviceWorkerRegistration.pushManager.getSubscription();
+        subscription = await serviceWorkerRegistration.pushManager.getSubscription();
+      } catch (error) {
+        alert('Error getting subscription:', error);
+        return;
+      }
 
+      try {
         if (!subscription) {
           const response = await fetch(`${process.env.REACT_APP_API}/push/get-vapid-public-key`);
           const vapidPublicKey = await response.text();
@@ -13,6 +19,11 @@ export function register() {
             applicationServerKey: vapidPublicKey
           });
         }
+      } catch (error) {
+        alert('Error generating subscription:', error);
+      }
+
+      try {
 
         await fetch(`${process.env.REACT_APP_API}/push/subscribe`, {
           method: 'POST',
@@ -22,7 +33,7 @@ export function register() {
           body: JSON.stringify(subscription)
         });
       } catch (error) {
-        alert('Error subscribing to push notifications:', error);
+        alert('Error sending subscription to server:', error);
       }
     }).catch((error) => {
       alert('Error registering service worker:', error);
