@@ -12,7 +12,9 @@ export function register() {
 
       try {
         if (!subscription) {
+          alert('No subscription found, generating a new one');
           const response = await fetch(`${process.env.REACT_APP_API}/push/get-vapid-public-key`);
+          alert(`Response status: ${response.status}`);
           const vapidPublicKey = await response.text();
           alert(`Vapid public key: ${vapidPublicKey}`);
           subscription = await serviceWorkerRegistration.pushManager.subscribe({
